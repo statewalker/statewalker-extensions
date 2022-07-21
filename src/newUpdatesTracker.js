@@ -1,14 +1,14 @@
 export default function newUpdatesTracker(transform = (d) => d) {
-    let index = new Map();
-    return (values = []) => {
-      const newIndex = new Map();
-      const list = [];
-      for (let value of values) {
-        let item = index.get(value);
-        const idx = list.length;
-        if (!item) index.set(value, (item = transform(value, idx)));
-        list.push(item);
-      }
-      return list;
-    };
-  }
+  let index = new Map();
+  return (values = []) => {
+    const newIndex = new Map();
+    const list = [];
+    for (let value of values) {
+      const item = index.get(value) || transform(value);
+      newIndex.set(value, item);
+      list.push(item);
+    }
+    index = newIndex;
+    return list;
+  };
+}

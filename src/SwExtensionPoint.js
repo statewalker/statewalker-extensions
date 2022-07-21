@@ -1,4 +1,18 @@
-import ns from "./ns.js"
+import { default as ns } from "@statewalker/ns";
+import newUpdatesTracker from "./newUpdatesTracker.js";
+import newSlotsUpdater from "./newSlotsUpdater.js";
+
+async function preloadServices() {
+    const s = preloadServices;
+    if (!s._promise) {
+        let promise = Promise.resolve();
+        if (!ns.services) {
+            promise = promise.then(() => import("https://unpkg.com/@statewalker/services/index.js?module"))
+        }
+        s._promise = promise.then(() => ns.services);
+    }
+    return s._promise;
+}
 
 export default class SwExtensionPoint extends HTMLElement {
     
@@ -10,8 +24,9 @@ export default class SwExtensionPoint extends HTMLElement {
     constructor() {
       super();
     }
+
   
-    _connect() {
+    async _connect() {
       const serviceName = this.getAttribute("name");
   
       const params = {};
@@ -26,13 +41,15 @@ export default class SwExtensionPoint extends HTMLElement {
         return service;
       });
       const updateSlots = newSlotsUpdater(this);
+      await preloadServices();
       this.consumer = ns.services.newConsumer(serviceName, (list) => {
         list = check(list);
         updateSlots(list);
       });
     }
   
-    _disconnect() {
+    async _disconnect() {
+      await preloadServices();
       if (this.consumer) this.consumer.close();
       delete this.consumer;
     }
@@ -45,8 +62,12 @@ export default class SwExtensionPoint extends HTMLElement {
     }
     attributeChangedCallback(name, oldVal, newVal) {
       if (oldVal !== newVal) {
-        this._disconnect();
-        this._connect();
+        (async () => {
+          await this._disconnect();
+          await this._connect();
+        })();
       }
     }
   }
+
+  customElements.define("sw-extension-point", SwExtensionPoint);

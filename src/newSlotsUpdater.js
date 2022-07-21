@@ -1,5 +1,6 @@
 import findDomSlots from "./findDomSlots.js"
 import replaceDomContent from "./replaceDomContent.js";
+import toDomSlots from "./toDomSlots.js";
 
 export default function newSlotsUpdater(element, slotSelector, getSlotName) {
     const slotsElements = findDomSlots(element, slotSelector, getSlotName);
