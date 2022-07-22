@@ -18,7 +18,7 @@ async function preloadServices() {
 export default class SwExtensionPoint extends HTMLElement {
 
   static initialize() {
-    ustomElements.define("sw-extension-point", SwExtensionPoint);
+    customElements.define("sw-extension-point", SwExtensionPoint);
   }
 
 
@@ -28,16 +28,24 @@ export default class SwExtensionPoint extends HTMLElement {
 
   constructor() {
     super();
-    this._spread = this.hasAttribute('spread');
+    this._template = this._findTemplate();
   }
 
-  _useSlotsUpdates() {
+  _findTemplate() {
+    let template;
+    for (let child = this.firstChild; child; child = child.nextSibling) {
+      if (child.tagName === "TEMPLATE") {
+        template = child;
+        break;
+      }
+    }
+    return template;
+  }
+
+  _useSlotsUpdates(params) {
     const trackUpdates = newUpdatesTracker((service) => {
       if (typeof service === "function") {
-        service = service({
-          element: this,
-          serviceName
-        });
+        service = service({ ...params, element: this });
       }
       return service;
     });
@@ -48,37 +56,36 @@ export default class SwExtensionPoint extends HTMLElement {
     };
   }
 
-  _useContentDuplication() {
-    if (!this._template) {
-      this._template = document.createElement("template");
-      const children = [];
-      for (let child = this.firstChild; child; child = child.nextSibling) {
-        children.push(child);
-      }
-      children.forEach(child => this._template.content.appendChild(child));
-    }
+  _useContentDuplication(params) {
+    const template = this._template;
     const trackUpdates = newUpdatesTracker((service) => {
       if (typeof service === "function") {
-        service = service({
-          element: this,
-          serviceName
-        });
+        service = service({ ...params, element: this });
       }
-      const element = this._template.content.cloneNode(true);
-      const updateSlots = newSlotsUpdater(element);
+      const fragment = template.content.cloneNode(true);
+      const updateSlots = newSlotsUpdater(fragment);
       updateSlots([service]);
-      return element;
-    }, ((element) => element.parentElement && element.parentElement.removeChild(this)));
+      return [...fragment.children];
+    }, (elements) => {
+      elements.forEach(child => child.parentElement && child.parentElement.removeChild(child));
+    });
     return (list) => {
       const elements = trackUpdates(list);
-      replaceDomContent(this, elements);
+      const allNodes = [];
+      for (let list of elements) {
+        allNodes.push(...list);
+      }
+      replaceDomContent(this, ...allNodes);
     };
   }
 
   async _connect() {
-    await preloadServices();
     const serviceName = this.getAttribute("name");
-    const update = this._spread ? this._useContentDuplication() : this._useSlotsUpdates();
+    const params = { serviceName };
+    const update = this._template
+      ? this._useContentDuplication(params)
+      : this._useSlotsUpdates(params);
+    await preloadServices();
     this.consumer = ns.services.newConsumer(serviceName, update);
   }
 
