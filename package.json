@@ -1,6 +1,6 @@
 {
   "name": "@statewalker/extensions",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Services-based implementations of extensions and extension points",
   "keywords": [],
   "homepage": "https://github.com/statewalker/statewalker-extensions",
