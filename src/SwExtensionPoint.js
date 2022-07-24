@@ -88,7 +88,7 @@ export default class SwExtensionPoint extends HTMLElement {
       ? this._useContentDuplication(template, params)
       : this._useSlotsUpdates(params);
     await preloadServices();
-    this.consumer = services.newConsumer(serviceName, update);
+    this.consumer = ns.services.newConsumer(serviceName, update);
   }
 
   async _disconnect() {
