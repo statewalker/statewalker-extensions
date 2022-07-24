@@ -39,13 +39,13 @@ export default class SwExtensionPoint extends HTMLElement {
   }
 
   _useSlotsUpdates(params) {
-    const trackUpdates = ext.newUpdatesTracker((service) => {
+    const trackUpdates = newUpdatesTracker((service) => {
       if (typeof service === "function") {
         service = service({ ...params, element: this });
       }
       return service;
     });
-    const updateSlots = ext.newSlotsUpdater(this);
+    const updateSlots = newSlotsUpdater(this);
     return (list) => {
       list = trackUpdates(list);
       updateSlots(list);
@@ -53,13 +53,13 @@ export default class SwExtensionPoint extends HTMLElement {
   }
 
   _useContentDuplication(template, params) {
-    const trackUpdates = ext.newUpdatesTracker(
+    const trackUpdates = newUpdatesTracker(
       (service) => {
         if (typeof service === "function") {
           service = service({ ...params, element: this });
         }
         const fragment = template.cloneNode(true);
-        const updateSlots = ext.newSlotsUpdater(fragment);
+        const updateSlots = newSlotsUpdater(fragment);
         updateSlots([service]);
         return [...fragment.children];
       },
@@ -76,7 +76,7 @@ export default class SwExtensionPoint extends HTMLElement {
       for (let list of elements) {
         allNodes.push(...list);
       }
-      ext.replaceDomContent(this, ...allNodes);
+      replaceDomContent(this, ...allNodes);
     };
   }
 
