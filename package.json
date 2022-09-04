@@ -32,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/statewalker/statewalker-extensions.git"
+    "url": "git@github.com:statewalker/statewalker-extensions.git"
   },
   "scripts": {
     "eslint": "eslint src",
