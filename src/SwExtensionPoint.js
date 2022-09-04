@@ -1,7 +1,7 @@
 import { default as ns } from "@statewalker/ns";
-import newUpdatesTracker from "./newUpdatesTracker.js";
+import { replaceDomContent } from "@statewalker/utils-dom";
+import { newUpdatesTracker } from "@statewalker/utils";
 import newSlotsUpdater from "./newSlotsUpdater.js";
-import replaceDomContent from "./replaceDomContent.js";
 
 async function preloadServices() {
   const s = preloadServices;
