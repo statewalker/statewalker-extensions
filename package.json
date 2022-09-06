@@ -1,6 +1,6 @@
 {
   "name": "@statewalker/extensions",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Services-based implementations of extensions and extension points",
   "keywords": [],
   "homepage": "https://github.com/statewalker/statewalker-extensions",
@@ -16,7 +16,7 @@
     "index.js"
   ],
   "devDependencies": {
-    "@statewalker/rollup": "^0.1.4",
+    "@statewalker/rollup": "^0.1.5",
     "eslint": "^8",
     "expect.js": "^0.3",
     "mocha": "^10",
@@ -46,9 +46,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@statewalker/ns": "^0.1.1",
-    "@statewalker/services": "^0.1.9",
-    "@statewalker/utils": "^0.2.3",
-    "@statewalker/utils-dom": "^0.1.1"
+    "@statewalker/ns": "^0.1.2",
+    "@statewalker/services": "^0.1.10",
+    "@statewalker/utils": "^0.2.4",
+    "@statewalker/utils-dom": "^0.1.2"
   }
 }
