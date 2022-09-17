@@ -1,5 +1,16 @@
 # @statewalker/extensions
 
+## 0.2.0
+
+### Minor Changes
+
+- Refactor access to the global services variable
+
+### Patch Changes
+
+- Updated dependencies
+  - @statewalker/services@0.2.0
+
 ## 0.1.12
 
 ### Patch Changes

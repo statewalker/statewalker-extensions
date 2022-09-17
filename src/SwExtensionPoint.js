@@ -1,21 +1,10 @@
-import { default as ns } from "@statewalker/ns";
+import { services } from "@statewalker/services";
 import { replaceDomContent } from "@statewalker/utils-dom";
 import { newUpdatesTracker } from "@statewalker/utils";
 import newSlotsUpdater from "./newSlotsUpdater.js";
 
-async function preloadServices() {
-  const s = preloadServices;
-  if (!s._promise) {
-    let promise = Promise.resolve();
-    if (!ns.services) {
-      promise = promise.then(() => import("https://unpkg.com/@statewalker/services/index.js?module"))
-    }
-    s._promise = promise.then(() => ns.services);
-  }
-  return s._promise;
-}
-
 export default class SwExtensionPoint extends HTMLElement {
+  
   static initialize(name = "sw-extension-point") {
     customElements.define(name, this);
   }
@@ -87,12 +76,10 @@ export default class SwExtensionPoint extends HTMLElement {
     const update = template
       ? this._useContentDuplication(template, params)
       : this._useSlotsUpdates(params);
-    await preloadServices();
-    this.consumer = ns.services.newConsumer(serviceName, update);
+    this.consumer = services.newConsumer(serviceName, update);
   }
 
   async _disconnect() {
-    await preloadServices();
     if (this.consumer) this.consumer.close();
     delete this.consumer;
   }
