@@ -1,5 +1,15 @@
 # @statewalker/extensions
 
+## 0.2.2
+
+### Patch Changes
+
+- Normalize package.json files
+- Updated dependencies
+  - @statewalker/services@0.2.2
+  - @statewalker/utils@0.3.1
+  - @statewalker/utils-dom@0.1.3
+
 ## 0.2.1
 
 ### Patch Changes
