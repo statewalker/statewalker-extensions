@@ -4,7 +4,7 @@ import { newUpdatesTracker } from "@statewalker/utils";
 import newSlotsUpdater from "./newSlotsUpdater.js";
 
 export default class SwExtensionPoint extends HTMLElement {
-  
+
   static initialize(name = "sw-extension-point") {
     customElements.define(name, this);
   }
@@ -28,12 +28,13 @@ export default class SwExtensionPoint extends HTMLElement {
   }
 
   _useSlotsUpdates(params) {
-    const trackUpdates = newUpdatesTracker((service) => {
-      if (typeof service === "function") {
-        service = service({ ...params, element: this });
-      }
-      return service;
-    });
+    const trackUpdates = newUpdatesTracker()
+      .enter((service) => {
+        if (typeof service === "function") {
+          service = service({ ...params, element: this });
+        }
+        return service;
+      });
     const updateSlots = newSlotsUpdater(this);
     return (list) => {
       list = trackUpdates(list);
@@ -42,8 +43,8 @@ export default class SwExtensionPoint extends HTMLElement {
   }
 
   _useContentDuplication(template, params) {
-    const trackUpdates = newUpdatesTracker(
-      (service) => {
+    const trackUpdates = newUpdatesTracker()
+      .enter((service) => {
         if (typeof service === "function") {
           service = service({ ...params, element: this });
         }
@@ -51,14 +52,13 @@ export default class SwExtensionPoint extends HTMLElement {
         const updateSlots = newSlotsUpdater(fragment);
         updateSlots([service]);
         return [...fragment.children];
-      },
-      (elements) => {
+      })
+      .exit((elements) => {
         elements.forEach(
           (child) =>
             child.parentElement && child.parentElement.removeChild(child)
         );
-      }
-    );
+      });
     return (list) => {
       const elements = trackUpdates(list);
       const allNodes = [];
