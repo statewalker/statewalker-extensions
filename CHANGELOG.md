@@ -1,5 +1,11 @@
 # @statewalker/extensions
 
+## 0.3.0
+
+### Minor Changes
+
+- Fix calls for the update tracker api
+
 ## 0.2.2
 
 ### Patch Changes
