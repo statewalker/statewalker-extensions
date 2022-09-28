@@ -1,6 +1,6 @@
 import { services } from "@statewalker/services";
-import { replaceDomContent } from "@statewalker/utils-dom";
 import { newUpdatesTracker } from "@statewalker/utils";
+import { replaceDomContent } from "@statewalker/utils-dom";
 import newSlotsUpdater from "./newSlotsUpdater.js";
 
 export default class SwExtensionPoint extends HTMLElement {
@@ -19,10 +19,19 @@ export default class SwExtensionPoint extends HTMLElement {
 
   _getTemplate() {
     if (this._template === undefined) {
-      const selector = this.getAttribute("template") || "template";
-      const template = this.querySelector(selector);
-      this._template =
-        (template ? template.content || template : null) || null;
+      this._template = null;
+      if (this.hasAttribute("template")) {
+        const selector = this.getAttribute("template") || "template";
+        const template = this.querySelector(selector);
+        this._template =
+          (template ? template.content || template : null) || null;
+        if (!this._template) {
+          this._template = document.createDocumentFragment();
+          while (this.firstChild) {
+            this._template.appendChild(this.firstChild);
+          }
+        }
+      }
     }
     return this._template;
   }
@@ -45,27 +54,28 @@ export default class SwExtensionPoint extends HTMLElement {
   _useContentDuplication(template, params) {
     const trackUpdates = newUpdatesTracker()
       .enter((service) => {
-        if (typeof service === "function") {
-          service = service({ ...params, element: this });
-        }
         const fragment = template.cloneNode(true);
+        if (typeof service === "function") {
+          service = service({ ...params, element: fragment });
+        }
         const updateSlots = newSlotsUpdater(fragment);
         updateSlots([service]);
         return [...fragment.children];
       })
-      .exit((elements) => {
-        elements.forEach(
-          (child) =>
-            child.parentElement && child.parentElement.removeChild(child)
+      .exit((nodes) => {
+        nodes.forEach(
+          (node) =>
+            node.parentElement && node.parentElement.removeChild(node)
         );
       });
     return (list) => {
-      const elements = trackUpdates(list);
-      const allNodes = [];
-      for (let list of elements) {
-        allNodes.push(...list);
+      const nodes = trackUpdates(list);
+      const content = [];
+      for (let node of nodes) {
+        if (!node) continue;
+        (Array.isArray(node) ? content.push(...node) : content.push(node))
       }
-      replaceDomContent(this, ...allNodes);
+      replaceDomContent(this, ...content);
     };
   }
 
