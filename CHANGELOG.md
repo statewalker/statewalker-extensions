@@ -1,5 +1,16 @@
 # @statewalker/extensions
 
+## 0.4.0
+
+### Minor Changes
+
+- Fix the implementation of the sw-extension-point tag.
+
+### Patch Changes
+
+- Updated dependencies
+  - @statewalker/utils-dom@0.2.0
+
 ## 0.3.1
 
 ### Patch Changes
