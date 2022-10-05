@@ -1,5 +1,11 @@
 # @statewalker/extensions
 
+## 0.5.0
+
+### Minor Changes
+
+- Refactor extension points implementation - remove slots management.
+
 ## 0.4.0
 
 ### Minor Changes
