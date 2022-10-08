@@ -1,5 +1,11 @@
 # @statewalker/extensions
 
+## 0.5.1
+
+### Patch Changes
+
+- Fix: remove content when there is no extensions available
+
 ## 0.5.0
 
 ### Minor Changes
