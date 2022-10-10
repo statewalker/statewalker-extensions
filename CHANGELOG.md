@@ -1,5 +1,16 @@
 # @statewalker/extensions
 
+## 0.6.0
+
+### Minor Changes
+
+- Re-export functions from services packages
+
+### Patch Changes
+
+- Updated dependencies
+  - @statewalker/utils@0.4.1
+
 ## 0.5.1
 
 ### Patch Changes
