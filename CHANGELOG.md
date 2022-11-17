@@ -1,5 +1,15 @@
 # @statewalker/extensions
 
+## 0.6.2
+
+### Patch Changes
+
+- Update rollup and dependencies
+- Updated dependencies
+  - @statewalker/services@0.2.3
+  - @statewalker/utils@0.4.2
+  - @statewalker/utils-dom@0.3.2
+
 ## 0.6.1
 
 ### Patch Changes
