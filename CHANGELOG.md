@@ -1,5 +1,12 @@
 # @statewalker/extensions
 
+## 0.6.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @statewalker/utils-dom@0.4.0
+
 ## 0.6.2
 
 ### Patch Changes
