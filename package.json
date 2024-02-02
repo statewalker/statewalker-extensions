@@ -17,10 +17,10 @@
   ],
   "devDependencies": {
     "@statewalker/rollup": "^0.1.6",
-    "eslint": "^8",
-    "expect.js": "^0.3",
-    "mocha": "^10",
-    "rollup": "^2"
+    "eslint": "^8.56.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^10.2.0",
+    "rollup": "^4.9.6"
   },
   "module": "dist/index.js",
   "main": "dist/index.js",
@@ -48,6 +48,6 @@
   "dependencies": {
     "@statewalker/services": "0.2.3",
     "@statewalker/utils": "^0.4.2",
-    "@statewalker/utils-dom": "^0.4.0"
+    "@statewalker/utils-dom": "^0.4.1"
   }
 }
